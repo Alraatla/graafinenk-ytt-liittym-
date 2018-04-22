@@ -16,8 +16,6 @@ ALPHABET = ["q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "å", "a", "s",
             "d", "f", "g", "h", "j", "k", "l", "ö", "ä", "z", "x", "c", "v",
             "b", "n", "m"]
 
-END_POINTS = 10
-
 
 class HangmanGame:
     def __init__(self):
@@ -42,6 +40,7 @@ class HangmanGame:
         self.__keyboard_info = Label(self.__window, text="Guess letters!")
         self.__word_entry = Entry()
         self.__word_to_guess = None
+        self.__word_guessed = []
         self.__word_entry.grid(row=17, column=4, columnspan=5)
 
         self.__entrylabel = Label(self.__window, text="Enter word:")
@@ -62,9 +61,11 @@ class HangmanGame:
     def initialize_game(self):
         self.__turn = PLAYER1
         self.__pictureLabel.configure(image=self.__hangmanpics[self.__mistakes])
-        self.__word_to_guess = self.__word_entry.get().lower()
+        self.__word_to_guess = self.__word_entry.get()
         self.__word_entry.delete(0, END)
-        self.__word_entry.insert(0, "*" * len(self.__word_to_guess))
+        self.__word_guessed = list(
+            map(lambda x: "*", range(len(self.__word_to_guess))))
+        self.__word_entry.insert(0, " ".join(self.__word_guessed))
         self.__word_entry.configure(state=DISABLED)
         self.__keyboard_info.grid(row=3, column=11)
         self.__entrylabel.configure(text="Guess this word")
@@ -72,9 +73,13 @@ class HangmanGame:
         self.setup_keyboard()
 
     def reset_turn(self):
-        self.__word_entry.insert(0, "*" * len(self.__word_to_guess))
+        self.__word_entry.configure(state=NORMAL)
+        self.__word_entry.delete(0,END)
+        self.__word_guessed = list(
+            map(lambda x: "*", range(len(self.__word_to_guess))))
+        self.__word_entry.insert(0, " ".join(self.__word_guessed))
+        self.__word_entry.configure(state=DISABLED)
         self.__mistakes = 0
-        self.__pictureLabel.configure(image=self.__hangmanpics[self.__mistakes])
         self.setup_keyboard()
 
     def keyboard_input(self, key):
