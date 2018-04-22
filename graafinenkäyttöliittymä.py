@@ -39,7 +39,7 @@ class HangmanGame:
 
         self.__keyboard_info = Label(self.__window, text="Guess letters!")
         self.__word_entry = Entry()
-        self.__word_to_guess = self.__word_entry
+        self.__word_to_guess = None
         self.__word_entry.grid(row=17, column=4, columnspan=5)
 
         self.__entrylabel = Label(self.__window, text="Enter word:")
