@@ -23,7 +23,7 @@ class HangmanGame:
         self.__window.title("Hangman -game")
 
         self.__turn = None
-        self.__mistakes = None
+        self.__mistakes = 0
 
         self.__hangmanpics = []
         for picturefile in HANGMANPICS:
