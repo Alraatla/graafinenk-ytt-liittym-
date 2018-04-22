@@ -84,7 +84,9 @@ class HangmanGame:
 
     def keyboard_input(self, key):
         self.__letterbuttons[key].configure(state=DISABLED)
-
+        for index in range(len(self.__word_to_guess):
+            if key == self.__word_to_guess[index]:
+                self.__word_guessed[index] = key
 
     def start(self):
         self.__window.mainloop()
