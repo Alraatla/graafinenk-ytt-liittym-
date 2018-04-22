@@ -24,6 +24,7 @@ class HangmanGame:
 
         self.__turn = None
         self.__mistakes = 0
+        self.__word_to_guess= None
 
         self.__hangmanpics = []
         for picturefile in HANGMANPICS:
@@ -58,17 +59,20 @@ class HangmanGame:
 
     def initialize_game(self):
         self.__turn = PLAYER1
-        self.__pictureLabel.configure(image=self.__hangmanpics[0])
-        word_entry = self.__word_entry.get()
+        self.__pictureLabel.configure(image=self.__hangmanpics[self.__mistakes])
+        self.__word_to_guess = self.__word_entry.get()
         self.__word_entry.delete(0, END)
-        self.__word_entry.insert(0, "*" * len(word_entry))
+        self.__word_entry.insert(0, "*" * len(self.__word_to_guess))
         self.__word_entry.configure(state=DISABLED)
         self.__keyboard_info.grid(row=3, column=11)
         self.__entrylabel.configure(text="Guess this word")
         self.__StartgameButton.configure(text="Reset")
         self.setup_keyboard()
 
-
+    def reset_turn(self):
+        self.__word_entry.insert(0, "*" * len(self.__word_to_guess))
+        self.__mistakes = 0
+        self.setup_keyboard()
 
     def keyboard_input(self, key):
         self.__letterbuttons[key].configure(state=DISABLED)
