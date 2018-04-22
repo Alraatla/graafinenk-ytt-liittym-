@@ -88,11 +88,13 @@ class HangmanGame:
             if row == 4:
                 for index in range(ALPHABET.index("a")):
                     self.__letterbuttons[ALPHABET[index]].grid(row=row, column=column)
+                    self.__letterbuttons[ALPHABET[index]].configure(state=ENABLED)
                     column += 1
 
             if row == 5:
                 for index in range(ALPHABET.index("a"), ALPHABET.index("z")):
                     self.__letterbuttons[ALPHABET[index]].grid(row=row, column=column)
+                    self.__letterbuttons[ALPHABET[index]].configure(state=ENABLED)
                     column += 1
 
             if row == 6:
@@ -100,6 +102,7 @@ class HangmanGame:
                 for index in range(ALPHABET.index("z"),
                                    ALPHABET.index("m") + 1):
                     self.__letterbuttons[ALPHABET[index]].grid(row=row, column=column)
+                    self.__letterbuttons[ALPHABET[index]].configure(state=ENABLED)
                     column += 1
 
             column = 12
