@@ -66,22 +66,11 @@ class HangmanGame:
 
         self.__pictureLabel = Label(self.__window)
         self.__pictureLabel.grid(row=0, column=0, rowspan=16, columnspan=10)
-
-
-
+        
+        self.initialize_game()
 
     def initialize_game(self):
         self.__turn = 1
-        self.__pictureLabel.configure(image=self.__hangmanpics[self.__mistakes])
-        self.__word_to_guess = self.__word_entry.get().lower()
-        self.__word_guessed = list(
-            map(lambda x: "*", range(len(self.__word_to_guess))))
-        self.__keyboard_info.configure(text="Player " +
-                                            str((self.__turn % 2) + 1)
-                                            + ", guess letters!")
-        self.__keyboard_info.grid(row=3, column=11)
-        self.__entrylabel.configure(text="Guess this word")
-        self.__StartgameButton.configure(text="Reset", command=self.reset_turn)
         self.setup_keyboard()
         self.update_ui()
 
@@ -102,10 +91,6 @@ class HangmanGame:
             self.__mistakes += 1
         self.update_ui()
         self.check_end_of_turn()
-
-
-    def start(self):
-        self.__window.mainloop()
 
     def setup_keyboard(self):
         row = 4
@@ -158,6 +143,20 @@ class HangmanGame:
                 self.__player_scores[1] += 2
             self.__turn += 1
         self.update_ui()
+    
+    def end_turn(self):
+    
+    def start_turn(self):
+        self.__pictureLabel.configure(image=self.__hangmanpics[self.__mistakes])
+        self.__word_to_guess = self.__word_entry.get().lower()
+        self.__word_guessed = list(
+            map(lambda x: "*", range(len(self.__word_to_guess))))
+        self.__keyboard_info.grid(row=3, column=11)
+        self.__entrylabel.configure(text="Guess this word")
+        self.update_ui()
+        
+    def start(self):
+        self.__window.mainloop()
 
 def main():
     ui = HangmanGame()
