@@ -37,6 +37,15 @@ class HangmanGame:
                             command=lambda y=letter: self.keyboard_input(y))
             self.__letterbuttons[letter] = button
         
+        for number in range(PLAYERS)
+            Label(self.__window, text="Player {:1s} score:".format(str(number + 1)))\
+            .grid(row=number + 15, column=11)
+        
+        self.__pointlabels =[]
+        for number in range(PLAYERS):
+            label = Label(self.__window)
+            label.grid(row=number + 15, column=12)
+            self.__pointlabels.append(label)
         
         self.__keyboard_info = Label(self.__window, text="Guess letters!")
         self.__word_entry = Entry()
