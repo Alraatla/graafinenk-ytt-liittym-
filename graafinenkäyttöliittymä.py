@@ -72,6 +72,7 @@ class HangmanGame:
     def reset_turn(self):
         self.__word_entry.insert(0, "*" * len(self.__word_to_guess))
         self.__mistakes = 0
+        self.__pictureLabel.configure(image=self.__hangmanpics[self.__mistakes])
         self.setup_keyboard()
 
     def keyboard_input(self, key):
