@@ -138,6 +138,8 @@ class HangmanGame:
         self.__word_entry.configure(state=DISABLED)
         self.__pictureLabel.configure(
             image=self.__hangmanpics[self.__mistakes])
+        for i in range(len(self.__pointlabels)):
+            self.__pointlabels[i].configure(text=self.__player_points[i])
 
     def check_end_of_turn(self):
         if self.__mistakes == 8:
