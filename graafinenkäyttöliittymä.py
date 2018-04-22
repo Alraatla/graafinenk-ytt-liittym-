@@ -36,7 +36,8 @@ class HangmanGame:
             button = Button(self.__window, text=letter, width=2,
                             command=lambda y=letter: self.keyboard_input(y))
             self.__letterbuttons[letter] = button
-
+        
+        
         self.__keyboard_info = Label(self.__window, text="Guess letters!")
         self.__word_entry = Entry()
         self.__word_to_guess = None
