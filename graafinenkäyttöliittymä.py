@@ -66,7 +66,7 @@ class HangmanGame:
         self.__word_entry.configure(state=DISABLED)
         self.__keyboard_info.grid(row=3, column=11)
         self.__entrylabel.configure(text="Guess this word")
-        self.__StartgameButton.configure(text="Reset")
+        self.__StartgameButton.configure(text="Reset", command=self.reset_turn)
         self.setup_keyboard()
 
     def reset_turn(self):
