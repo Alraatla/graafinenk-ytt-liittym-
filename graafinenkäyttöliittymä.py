@@ -36,18 +36,18 @@ class HangmanGame:
             button = Button(self.__window, text=letter, width=2,
                             command=lambda y=letter: self.keyboard_input(y))
             self.__letterbuttons[letter] = button
-        
-        for number in range(PLAYERS)
+
+        for number in range(PLAYERS):
             Label(self.__window, text="Player {:1s} score:".format(str(number + 1)))\
             .grid(row=number + 15, column=11)
-        
+
         self.__pointlabels =[]
         for number in range(PLAYERS):
             label = Label(self.__window)
             label.grid(row=number + 15, column=12)
             self.__pointlabels.append(label)
-        
-        self.__keyboard_info = Label(self.__window, text="Guess letters!")
+
+        self.__keyboard_info = Label(self.__window)
         self.__word_entry = Entry()
         self.__word_to_guess = None
         self.__word_guessed = []
@@ -59,7 +59,7 @@ class HangmanGame:
                                         command=self.initialize_game)
         self.__StartgameButton.grid(row=17, column=9)
 
-        
+
 
         Button(self.__window, text="Quit", command=self.__window.destroy)\
             .grid(row=17, column=26)
@@ -76,6 +76,9 @@ class HangmanGame:
         self.__word_to_guess = self.__word_entry.get().lower()
         self.__word_guessed = list(
             map(lambda x: "*", range(len(self.__word_to_guess))))
+        self.__keyboard_info.configure(text="Player " +
+                                            str((self.__turn % 2) + 1)
+                                            + ", guess letters!")
         self.__keyboard_info.grid(row=3, column=11)
         self.__entrylabel.configure(text="Guess this word")
         self.__StartgameButton.configure(text="Reset", command=self.reset_turn)
@@ -83,7 +86,7 @@ class HangmanGame:
         self.update_ui()
 
     def reset_turn(self):
-
+        self.__player_scores[self.__turn % 2] -= 1
         self.__word_guessed = list(
             map(lambda x: "*", range(len(self.__word_to_guess))))
         self.__mistakes = 0
@@ -140,6 +143,9 @@ class HangmanGame:
             image=self.__hangmanpics[self.__mistakes])
         for i in range(len(self.__pointlabels)):
             self.__pointlabels[i].configure(text=self.__player_scores[i])
+        self.__keyboard_info.configure(text="Player " +
+                                            str((self.__turn % 2) + 1)
+                                            + ", guess letters!")
 
     def check_end_of_turn(self):
         if self.__mistakes == 8:
