@@ -1,13 +1,44 @@
 """
+Graafinen käyttöliittymä, skaalautuva
+TIE-02100 Johdatus ohjelmointiin
 Aleksi Raatala, 274265
+Mauri Leino, 274411
+
+Hirsipuu-tyyppinen peli kahdelle pelaajalle
+Säännöt:
+
+Pelissä toinen pelaaja syöttää syötekenttään sanan, jota toinen pelaaja
+lähtee arvaamaan painamalla ikkunaan avautuvia kirjainnäppäimiä. Syöte ei saa
+olla tyhjä, eikä se saa sisältää numeroita tai välilyöntejä.
+
+Syöte hyväksytään painamalla syötekentän vieressä olevaa nappulaa. Jos
+syötteessä on jotain vikaa, saa pelaaja antaa syötteen uudestaan. Ensimmäisellä
+vuorolla pelaaja 1 antaa sanan, ja pelaaja 2 arvaa.
+
+Kun syöte on lukittu, muuttuvat sanan kirjaimet tähdiksi, ja jos arvaava
+pelaaja arvaa kirjaimen oikein, kaikki ko. kirjaimet sanassa tulevat näkyviin.
+
+Arvaaja saa tehdä 7 virhettä, ja kahdeksannesta vuoro päättyy. Jos pelaaja ei
+saa sanaa oikein, saa sanan syöttänyt pelaaja yhden pisteen. Jos pelaaja taas
+arvaa kaikki sanan kirjaimet oikein, saa hän kaksi pistettä.
+
+Syötekentän vieressä on myös Reset-nappi, jota arvaaja voi painaa esimerkiksi
+painettuaan vahingossa jotain kirjainnappia. Tällöin virheet nollataan, kuten
+myös arvatut kirjaimet. Reset-napin painalluksesta pelaaja saa kuitenkin yhden
+miinuspisteen, joten sitä kannattaa käyttää harkiten.
+
+Peli pelataan kymmeneen pisteeseen, mutta tasapuolisuuden nimissä pelin
+päättyminen tarkistetaan vain, kun pelaaja 1 on arvannut sanaa, jotta tällä
+on yhtäläiset mahdollisuudet saavuttaa 10 pistettä. Myös tasapeli on siis
+mahdollinen.
 """
 
 from tkinter import *
 
 
-HANGMANPICS = ["Hangman_start.gif", "Hangman_step1.gif", "Hangman_step3.gif",
-               "Hangman_step4.gif", "Hangman_step5.gif", "Hangman_step6.gif",
-               "Hangman_step7.gif", "Hangman_final.gif"]
+HANGMANPICS = ["Hangman_start.gif", "Hangman_step1.gif", "Hangman_step2.gif",
+               "Hangman_step3.gif", "Hangman_step4.gif", "Hangman_step5.gif",
+               "Hangman_step6.gif", "Hangman_step7.gif", "Hangman_final.gif"]
 
 PLAYERS = 2
 
@@ -18,6 +49,8 @@ ALPHABET = ["q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "å", "a", "s",
 NUMBERS = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"]
 
 GAME_END_PICS = ["Wins1.gif", "Wins2.gif", "Tie.gif"]
+
+GAME_END_SCORE = 10
 
 
 class HangmanGame:
@@ -183,7 +216,7 @@ class HangmanGame:
 
     def check_end_of_turn(self):
 
-        if self.__mistakes == 7:
+        if self.__mistakes == 8:
             self.__turn += 1
             self.__player_scores[self.__turn % 2] += 1
             self.end_turn()
@@ -197,7 +230,7 @@ class HangmanGame:
             self.__turn += 1
             self.end_turn()
 
-        if self.__mistakes != 7 and "*" in self.__word_guessed:
+        if self.__mistakes != 8 and "*" in self.__word_guessed:
             self.update_ui()
 
     def start_turn(self):
@@ -223,7 +256,7 @@ class HangmanGame:
 
         for i in range(len(self.__pointlabels)):
             self.__pointlabels[i].configure(text=self.__player_scores[i])
-        self.setup_keyboard(turn_over = True)
+        self.setup_keyboard(turn_over=True)
         self.__keyboard_info.configure(text="Player " +
                                             str((lambda x: 1 if (x % 2) == 1
                                                 else 2)(self.__turn)) +
@@ -247,13 +280,14 @@ class HangmanGame:
             self.end_turn()
 
     def check_end_of_game(self):
-        if self.__player_scores[0] >= 10 and self.__player_scores[1] >= 10:
+        if self.__player_scores[0] >= GAME_END_SCORE and \
+                self.__player_scores[1] >= GAME_END_SCORE:
             self.end_game(2)
 
-        elif self.__player_scores[0] >= 10:
+        elif self.__player_scores[0] >= GAME_END_SCORE:
             self.end_game(0)
 
-        elif self.__player_scores[1] >= 10:
+        elif self.__player_scores[1] >= GAME_END_SCORE:
             self.end_game(1)
 
     def end_game(self, winner):
