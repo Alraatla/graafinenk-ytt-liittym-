@@ -117,9 +117,7 @@ class HangmanGame:
         letters in the entry are decapitalized
         :return: None
         """
-        #   TODO: checkaa toimiiko ilman vuoron asettamista, sillä se tehdään
-        #   sekä rakentajassa että start_new_game-metodissa
-        self.__turn = 1
+        
         self.__word_to_guess = self.__word_entry.get().lower()
 
         self.__word_guessed = list(
