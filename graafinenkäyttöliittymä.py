@@ -152,7 +152,8 @@ class HangmanGame:
         self.update_ui()
 
     def keyboard_input(self, key):
-        """ Takes keyboard input from the player guessing the word, disables the
+        """
+        Takes keyboard input from the player guessing the word, disables the
         button and checks if the player has guessed right.
         :param str key: The letter on the button pressed
         :return: None
@@ -235,7 +236,8 @@ class HangmanGame:
                                             + ", guess letters!")
 
     def check_end_of_turn(self):
-        """ Checks if player guessing word has either exceeded the number of
+        """
+        Checks if player guessing word has either exceeded the number of
         mistakes allowed, or guessed the whole word.
         :return: None
         """
@@ -257,7 +259,8 @@ class HangmanGame:
             self.update_ui()
 
     def start_turn(self):
-        """ Starts the turn for player guessing word given by other player.
+        """
+        Starts the turn for player guessing word given by other player.
         :return: None
         """
         self.__mistakes = 0
@@ -267,14 +270,14 @@ class HangmanGame:
 
         self.__word_guessed = list(
             map(lambda x: "*", range(len(self.__word_to_guess))))
-        self.__keyboard_info.grid(row=3, column=11)
+        #   self.__keyboard_info.grid(row=3, column=11)
         self.__entrylabel.configure(text="Guess this word")
         self.__StartgameButton.configure(text="Reset", command=self.reset_turn)
         self.setup_keyboard()
         self.update_ui()
         self.check_entry()
 
-    def end_turn(self):
+    def end_turn(self, text="Enter word:"):
         """ Ends current turn by clearing entry box, but doesn't change the
         player in turn. If player 1 has finished guessing, points of players
         are checked for a possible winner.
@@ -284,6 +287,7 @@ class HangmanGame:
         self.__word_entry.delete(0, END)
         self.__StartgameButton.configure(text="Start turn",
                                          command=self.start_turn)
+        self.__entrylabel.configure(text=text)
 
         for i in range(len(self.__pointlabels)):
             self.__pointlabels[i].configure(text=self.__player_scores[i])
@@ -300,17 +304,17 @@ class HangmanGame:
         :return: None
         """
         if not self.__word_to_guess:
-            self.__entrylabel.configure(text="No entry!")
-            self.end_turn()
+            #   self.__entrylabel.configure(text="No entry!")
+            self.end_turn("No entry!")
 
         for character in self.__word_to_guess:
             if character in NUMBERS:
-                self.__entrylabel.configure(text="A number in entry!")
-                self.end_turn()
+                #   self.__entrylabel.configure(text="A number in entry!")
+                self.end_turn("No numbers allowed!")
 
         if " " in self.__word_to_guess:
-            self.__entrylabel.configure(text="No spaces allowed!")
-            self.end_turn()
+            #   self.__entrylabel.configure(text="No spaces allowed!")
+            self.end_turn("No spaces allowed!")
 
     def check_end_of_game(self):
         """
@@ -340,7 +344,7 @@ class HangmanGame:
         self.__StartgameButton.configure(text="Start new game",
                                          command=self.start_new_game)
         self.__entrylabel.configure(text="")
-        self.__keyboard_info.configure(text="")
+        self.__keyboard_info.configure(text="Game ended!")
         self.__word_entry.configure(state=DISABLED)
 
     def start_new_game(self):
@@ -354,9 +358,9 @@ class HangmanGame:
         self.__word_entry.delete(0, END)
         self.__pictureLabel.configure(
             image=self.__hangmanpics[self.__mistakes])
-        self.__keyboard_info = Label(self.__window, text="Player " +
-                                                         str((self.__turn % 2))
-                                                         + ", enter a word!")
+        self.__entrylabel.configure(text="Enter word:")
+        self.__keyboard_info.configure(text="Player " + str((self.__turn % 2))
+                                                      + ", enter a word!")
         self.__StartgameButton.configure(text="Start the game!",
                                          command=self.initialize_game)
 
