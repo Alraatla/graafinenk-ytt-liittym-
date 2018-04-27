@@ -98,7 +98,7 @@ class HangmanGame:
 
         self.__entrylabel = Label(self.__window, text="Enter word:")
         self.__StartgameButton = Button(self.__window, text="Start the game!",
-                                        command=self.initialize_game)
+                                        command=self.start_turn)
 
         self.__pictureLabel = Label(self.__window)
 
@@ -111,25 +111,21 @@ class HangmanGame:
         Button(self.__window, text="Quit", command=self.__window.destroy) \
             .grid(row=17, column=26)
 
-    def initialize_game(self):
-        """ Initializes game by getting the word entered by player in turn and
-        turning it into asterisks to show in the disabled entry box. All
-        letters in the entry are decapitalized
+    def start_turn(self):
+        """
+        Starts the turn for player guessing word given by other player.
         :return: None
         """
-        
+        self.__mistakes = 0
+        # self.__pictureLabel.configure(
+        #     image=self.__hangmanpics[self.__mistakes])
         self.__word_to_guess = self.__word_entry.get().lower()
 
         self.__word_guessed = list(
             map(lambda x: "*", range(len(self.__word_to_guess))))
-
-        self.__keyboard_info.configure(text="Player " +
-                                            str((self.__turn % 2) + 1)
-                                            + ", guess letters!")
-
+        #   self.__keyboard_info.grid(row=3, column=11)
         self.__entrylabel.configure(text="Guess this word")
         self.__StartgameButton.configure(text="Reset", command=self.reset_turn)
-
         self.setup_keyboard()
         self.update_ui()
         self.check_entry()
@@ -137,7 +133,7 @@ class HangmanGame:
     def reset_turn(self):
         """ Resets mistakes to zero, and discards all guessed letters from the
         word to guess. Also takes one point from the player guessing the word.
-        :return:
+        :return: None
         """
         self.__player_scores[self.__turn % 2] -= 1
 
@@ -256,25 +252,6 @@ class HangmanGame:
         if self.__mistakes != 8 and "*" in self.__word_guessed:
             self.update_ui()
 
-    def start_turn(self):
-        """
-        Starts the turn for player guessing word given by other player.
-        :return: None
-        """
-        self.__mistakes = 0
-        self.__pictureLabel.configure(
-            image=self.__hangmanpics[self.__mistakes])
-        self.__word_to_guess = self.__word_entry.get().lower()
-
-        self.__word_guessed = list(
-            map(lambda x: "*", range(len(self.__word_to_guess))))
-        #   self.__keyboard_info.grid(row=3, column=11)
-        self.__entrylabel.configure(text="Guess this word")
-        self.__StartgameButton.configure(text="Reset", command=self.reset_turn)
-        self.setup_keyboard()
-        self.update_ui()
-        self.check_entry()
-
     def end_turn(self, text="Enter word:"):
         """ Ends current turn by clearing entry box, but doesn't change the
         player in turn. If player 1 has finished guessing, points of players
@@ -360,7 +337,7 @@ class HangmanGame:
         self.__keyboard_info.configure(text="Player " + str((self.__turn % 2))
                                                       + ", enter a word!")
         self.__StartgameButton.configure(text="Start the game!",
-                                         command=self.initialize_game)
+                                         command=self.start_turn)
 
     def start(self):
         self.__window.mainloop()
